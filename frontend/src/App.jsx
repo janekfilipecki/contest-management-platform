@@ -18,7 +18,6 @@ function App() {
         console.error("Error fetching data:", error);
       }
     }
-
     fetchData();
   }, []);
 
@@ -27,7 +26,7 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th>Title</th>
+            <th>Contest Title</th>
             <th>Description</th>
           </tr>
         </thead>

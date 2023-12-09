@@ -4,7 +4,6 @@ import os
 import sys
 
 
-# REQ_01
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
@@ -18,10 +17,6 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-
-# REQ_01_END
-
-# REQ_01_END
 
 if __name__ == "__main__":
     main()
