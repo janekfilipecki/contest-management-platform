@@ -20,7 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-bi_x8h!f+(h6q9-%o-lf-t9+9wx&4rv7gi!(zps^5!^r62a1p="
+SECRET_KEY = (
+    "django-insecure-bi_x8h!f+(h6q9-%o-lf-t9+9wx&4rv7gi!(zps^5!^r62a1p="
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,10 +84,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "contest_platform_database",
+        "NAME": "contest-platform-database",
         "USER": "admin",
         "PASSWORD": "admin",
-        "HOST": "localhost",
+        "HOST": "database",
         "PORT": "5432",
     }
 }
@@ -96,7 +98,9 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        ),
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
