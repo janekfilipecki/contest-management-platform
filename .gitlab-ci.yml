@@ -5,7 +5,7 @@ run_test:
         - ls -la  
         - cat Pipfile  
         - apt-get update && apt-get install -y pipenv
-        - pipenv install
+        - pipenv install --dev --deploy --ignore-pipfile
     script:
         - pipenv run python manage.py test
     only:
