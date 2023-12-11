@@ -1,5 +1,5 @@
 run_test:
-    image: python3.11-slim
+    image: python:3.11-slim
     before_script:
         - apt-get update && apt-get install -y pipenv
         - cd backend
