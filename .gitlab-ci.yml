@@ -2,7 +2,8 @@ run_test:
     image: python:3.12.0
     before_script:
         - apt-get update && apt-get install -y pipenv
-        - cd backend/
         - pipenv install
     script:
         - pipenv run python manage.py test
+    only:
+        - fb-cicd
