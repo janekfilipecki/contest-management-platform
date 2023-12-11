@@ -1,5 +1,5 @@
 run_test:
-    image: python3.12-slim
+    image: python3.12-slim-bullseye
     before_script:
         - apt-get update && apt-get install -y pipenv
         - cd backend
