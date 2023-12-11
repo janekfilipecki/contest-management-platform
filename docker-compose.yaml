@@ -1,25 +1,50 @@
-version: "3"
+version: "3.9"
 
 services:
-  django:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  db:
+    image: postgres:latest
     ports:
-      - "8000:8000"
-    depends_on:
-      - database
+      - "5432:5432"
 
-  react:
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=contest-platform-database
+
+    volumes:
+      - ./data/db:/var/lib/postgresql/data/
+
+  frontend:
     build:
-      context: .
-      dockerfile: Dockerfile.react
+      context: ./frontend
+      dockerfile: Dockerfile
+
     ports:
       - "3000:3000"
+    stdin_open: true
+    tty: true
 
-  database:
-    image: postgres:latest
+    volumes:
+      - ./frontend:/app/frontend
+
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_INITDB_ARGS: "--username=admin"
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=admin
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./backend:/app/backend
+
+    depends_on:
+      - db

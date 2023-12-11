@@ -87,7 +87,7 @@ DATABASES = {
         "NAME": "contest-platform-database",
         "USER": "admin",
         "PASSWORD": "admin",
-        "HOST": "database",
+        "HOST": "db",
         "PORT": "5432",
     }
 }
