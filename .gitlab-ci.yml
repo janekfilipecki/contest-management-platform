@@ -1,1 +1,8 @@
-
+run_test:
+    image: python3.12-slim
+    before_script:
+        - apt-get update && apt-get install -y pipenv
+        - cd backend
+        - pipenv install
+    script:
+        - pipenv run python manage.py test
