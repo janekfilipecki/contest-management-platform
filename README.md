@@ -59,18 +59,23 @@ Pamiętaj, że plik `Pipfile.lock` automatycznie zapisuje dokładne wersje zains
 
 ## Uruchomienie serwera backend
 
-W projekcie backend piszemy w Django. Aby uruchomić serwer Django, wykonaj następujące kroki:
+W projekcie backend piszemy w Django. 
+
+### **UWAGA**
+Pamiętaj, że żeby serwer backendu mógł zadziałać, musisz najpierw skonfigurować i uruchomić serwer bazy danych. W tym celu skieruj się do kolejnego punktu. Po skończeniu tamtych instrukcji, podążaj dalej za poniższymi instrukcjami.
+
+Aby uruchomić serwer Django, wykonaj następujące kroki:
 
 1. **Migracje bazy danych**: Wykonaj migracje, aby zastosować zmiany w bazie danych:
 
-   ```
+   ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
 2. **Uruchomienie serwera**: Aby uruchomić serwer deweloperski, wpisz poniższą komendę:
 
-   ```
+   ```bash
    python manage.py runserver
    ```
 
@@ -80,7 +85,7 @@ W projekcie backend piszemy w Django. Aby uruchomić serwer Django, wykonaj nast
 
 4. **Zmiana portu**:Możesz zmienić port, na którym działa serwer, dodając parametr `-p` lub `--port`. Na przykład, aby uruchomić serwer na porcie 8080, wpisz:
 
-   ```
+   ```bash
    python manage.py runserver 8080
    ```
 
@@ -98,44 +103,90 @@ W projekcie frontend piszemy w React. Aby uruchomić serwer React, wykonaj nast�
    ```
 
    Jeżeli pokazuje ci się zainstalowa wersja to znaczy, że node i npm są zainstalowane.
-
-2. **Pobierz Nodejs i npm**: Upewnij się, że masz pobrany Nodejs i npm lub pobierz dla swojej platformy:
-
-   https://nodejs.org/en/download
-
-3. **Uruchomienie serwera**: Aby uruchomić serwer deweloperski, wpisz poniższą komendę w katalogu frontend:
-
+   Jeżęli Nodejs i npm nie są zainstalowane, użyj:
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
    ```
+   Po pobraniu zrestartuj terminal, następnie:
+   ```bash
+   nvm install node
+   ```
+   
+   Node i npm powinny być już zainstalowane, teraz należy pobrać przypisane do projektu pakiety poprzez:
+   ```bash
+   npm install
+   ```
+   
+   Następnie uruchamiamy serwer react:
+   ```bash
    npm run dev
    ```
+   
+   Serwer powinien być uruchomiony i dostępny na porcie: localhost:5173
 
-   Serwer będzie dostępny pod adresem domyślnym `http://localhost:5173/`.
 
 ## Baza danych
 
 Projekt skonfigurowany jest do pracy z bazą PostgreSQL. Aby aplikacja instancja `django` działała poprawnie, powinieneś na swojej maszynie skonfigurować serwer `postgres`, i uruchomić go na porcie `5432`.
 
 1. **Instalacja postgres**: Aby zainstalować serwer postgres na swojej maszynie `linux` wykonaj:
-   ```
+   ```bash
    sudo apt install postgresql
    ```
 2. **Uruchomienie serwera**: Następnie aby uruchomić serwer użyj:
-   ```
+   ```bash
    sudo service postgresql start
    ```
+   Domyślnie serwer uruchamiać będzie się lokalnie, czyli na `localhost`, na porcie `5432`. W celu zmiany musisz zmienić te atrybuty w pliku konfiguracyjnym bazy.
+
 3. **Interakcja**: Możesz połączyć się z serwerem za pomocą dowolnego klienta `postgres`.
 
 - Aby zrobić to za pomocą `psql` wykonaj:
-  ```
+  ```bash
   sudo -u postgres psql
   ```
 - Aby wyjść z klienta `psql` wykonaj:
-  ```
+  ```bash
   exit
   ```
 
-4. **Zatrzymanie serwera**: Aby zatrzymać serwer użyj:
-   ```
+4. **Konfiguracja bazy danych**: Teraz gdy masz dostęp do serwisu postgres, możesz stworzyć odpowiednią bazę:
+
+   1. Sprawdź, czy w pliku konfiguracyjnym django baza została skonfigurowana poprawnie. Aby to zrobić, znajdź plik `contest-platform/backend/backend/settings.py`. W tym pliku odnajdź sekcję `DATABASES`, jeśli jej nie ma, stwórz ją. Powinna ona mieć następującą strukturę:
+      ```python
+      DATABASES = {
+      "default": {
+         "ENGINE": "<typ_silnika>",
+         "NAME": "<nazwa_bazy_danych>",
+         "USER": "<nazwa_użytkownika>",
+         "PASSWORD": "<hasło>",
+         "HOST": "<adres_hosta>",
+         "PORT": "<numer_portu>",
+         }
+      }
+      ```
+      W pliku powinny znajdować się już domyślne dane konfiguracyjne. 
+
+   2. Stwórz bazę o zadanych bądź wybranych atrybutach. Aby to zrobić, po wejściu do klienta `psql` wykonaj:
+      ```sql
+      CREATE DATABASE '<nazwa_bazy_danych>';
+      ```
+      Następnie stwórz odpowieniego użytkownika, z odpowiednimi uprawnieniami:
+
+      ```sql
+      CREATE ROLE '<nazwa_użytkownika>' WITH SUPERUSER LOGIN ENCRYPTED PASSWORD '<hasło>';
+      ```
+      Po poprawnym wykonaniu powyższych instrukcji, django serwerdjango powinien być w stanie połączyć się z bazą danych.
+
+   3. Jeśli chcesz wykonwyać polecenia `SQL` w bazie danych, użyj następującego polecenia by połączyć się z nią przez klienta `psql`:
+      ```sql
+      \c '<nazwa_bazy_danych>'
+      ```
+
+
+   
+5. **Zatrzymanie serwera**: Aby zatrzymać serwer po zakończeniu pracy, użyj:
+   ```bash
    sudo service postgresql stop
    ```
 
@@ -149,7 +200,7 @@ W celu tworzenia dokumentacji używamy modułu Sphinx. Poniżej widnieje krótka
 
 1. **Generowanie dokumentacji**: Sphinx generuje dokumentację w postaci `html`. Aby to zrobić nawiguj do folderu docs i uruchom:
 
-   ```
+   ```bash
    cd docs
    make html
    ```
@@ -157,7 +208,7 @@ W celu tworzenia dokumentacji używamy modułu Sphinx. Poniżej widnieje krótka
    Sphinx umieści wygenerowane pliki w folderze `docs/build/html`
 
 2. **Wyświetlanie**: Aby wyświetlić plik użyj:
-   ```
+   ```bash
    open build/html/index.html
    ```
    bądź znajdź nawiguj do pliku i otwórz w dowolnej przeglądarce.
