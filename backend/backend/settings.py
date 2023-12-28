@@ -13,13 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import io
-import environ
-import google.auth
-from google.cloud import secretmanager
+from dotenv import load_dotenv
 
-# Initialize environ
-# env = environ.Env()
-# environ.Env.read_env()
+# load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,45 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-env = environ.Env(DEBUG=(bool, True))
-env_file = os.path.join(BASE_DIR, ".env")
 
 # Attempt to load the Project ID into the environment, safely failing on error.
-try:
-    _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
-except google.auth.exceptions.DefaultCredentialsError:
-    pass
-
-if os.path.isfile(env_file):
-    # Use a local secret file, if provided
-
-    env.read_env(env_file)
-# ...
-elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
-    # Pull secrets from Secret Manager
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
-
-    client = secretmanager.SecretManagerServiceClient()
-    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
-    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
-    payload = client.access_secret_version(name=name).payload.data.decode(
-        "UTF-8"
-    )
-
-    env.read_env(io.StringIO(payload))
-else:
-    raise Exception(
-        "No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found."
-    )
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
-
+SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["20.215.200.116"]
 
 
 # Application definition
@@ -86,6 +53,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -122,10 +90,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
+        "NAME": "contest_platform_database",
+        "USER": os.getenv('DATABASE_USER'),
+        "PASSWORD": os.getenv('DATABASE_PASSWD'),
+        "HOST": os.getenv('DATABASE_URL'),
     }
 }
 
@@ -166,9 +134,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = "static"
+STATIC_ROOT = os.path.join(BASE_DIR,'backend/static')
 STATIC_URL = "/static/"
-STATICFILES_DIRS = []
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
