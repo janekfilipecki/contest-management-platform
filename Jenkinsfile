@@ -9,6 +9,15 @@ pipeline {
         sh 'echo "Hello World"'
       }
     }
+    stage('build') {
+      steps {
+        script {
+          dir('backend/') {
+            sh 'pipenv install'
+          }
+        }
+      }
+    }
     stage('tests') {
       steps {
         script {
