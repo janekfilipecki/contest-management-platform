@@ -13,7 +13,7 @@ pipeline {
       steps {
         script {
           dir('backend/') {
-            sh 'pipenv install'
+            sh 'python3 -m pipenv install'
           }
         }
       }
@@ -22,7 +22,7 @@ pipeline {
       steps {
         script {
           dir('backend/') {
-            sh 'pipenv run python manage.py test'
+            sh 'python3 -m pipenv run python manage.py test'
           }
         }
       }
