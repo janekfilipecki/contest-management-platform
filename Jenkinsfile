@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  triggers {
+        gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
+  }
   stages {
     stage('hello') {
       steps {
