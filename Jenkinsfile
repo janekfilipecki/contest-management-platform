@@ -13,7 +13,10 @@ pipeline {
       steps {
         script {
           dir('backend/') {
-            sh 'python3 -m pipenv install'
+            echo 'Install dependencies'
+            sh 'python3 --version'
+            sh 'pip3 install pipenv'
+            sh 'pipenv install'
           }
         }
       }
