@@ -28,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Attempt to load the Project ID into the environment, safely failing on error.
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["20.215.200.116"]
 
@@ -51,10 +51,9 @@ INSTALLED_APPS = [
 
 #CORS_ALLOWED_ORIGINS = ['http://20.215.192.31:5173']
 
-
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -92,9 +91,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "contest_platform_database",
-        "USER": os.getenv('DATABASE_USER'),
-        "PASSWORD": os.getenv('DATABASE_PASSWD'),
-        "HOST": os.getenv('DATABASE_URL'),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWD"),
+        "HOST": os.getenv("DATABASE_URL"),
     }
 }
 
@@ -136,10 +135,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR,'backend/static')
+STATIC_ROOT = os.path.join(BASE_DIR, "backend/static")
 STATIC_URL = "/static/"
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
