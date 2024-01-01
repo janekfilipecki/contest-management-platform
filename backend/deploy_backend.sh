@@ -3,6 +3,6 @@
 ssh -tt azureuser@20.215.200.116 <<EOF
   cd /home/azureuser/contest-platform/backend
   git checkout fb-cicd
-  nohup pipenv run python3 manage.py runserver 0.0.0.0:8000 &
+  pipenv run gunicorn -c gunicorn_config.py backend.wsgi --daemon
   exit
 EOF
