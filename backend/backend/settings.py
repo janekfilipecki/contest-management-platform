@@ -45,11 +45,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "corsheaders",
     "contest_platform",
+    'corsheaders',
 ]
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+#CORS_ALLOWED_ORIGINS = ['http://20.215.192.31:5173']
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -130,6 +131,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
