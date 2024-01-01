@@ -4,12 +4,7 @@ pipeline {
     githubPush()
   }
   stages {
-    stage('hello') {
-      steps {
-        sh 'echo "Hello World"'
-      }
-    }
-    stage('build') {
+    stage('install dependencies') {
       steps {
         script {
           dir('backend/') {
@@ -26,6 +21,15 @@ pipeline {
         script {
           dir('backend/') {
             sh 'python3 -m pipenv run python manage.py test'
+          }
+        }
+      }
+    }
+    stage('deploy') {
+      steps {
+        script {
+          dir('backend/') {
+            sh './deploy_backend.sh'
           }
         }
       }
