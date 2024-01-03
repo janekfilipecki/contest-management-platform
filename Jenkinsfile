@@ -12,6 +12,7 @@ pipeline {
             sh 'python3 --version'
             sh 'pip3 install pipenv'
             sh 'python3 -m pipenv install'
+            sh 'python3 -m pipenv install psycopg2-binary'
           }
         }
       }
@@ -29,6 +30,7 @@ pipeline {
       steps {
         script {
           dir('backend/') {
+            sh 'python3 -m pipenv run python manage.py makemigrations'
             sh 'python3 -m pipenv run python manage.py migrate'
           }
         }
