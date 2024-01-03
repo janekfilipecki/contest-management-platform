@@ -21,6 +21,7 @@ pipeline {
       steps {
         script {
           dir('backend/') {
+            echo 'Run django tests'
             sh 'python3 -m pipenv run python manage.py test'
           }
         }
