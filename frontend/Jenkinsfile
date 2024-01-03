@@ -8,11 +8,7 @@ pipeline {
       steps {
         script {
           dir('frontend/') {
-            echo 'Install dependencies'
-            sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
-            sh 'source ~/.bashrc'
-            sh 'nvm install node'
-            sh 'npm install'
+            sh './prod_dependencies_frontend.sh'
           }
         }
       }
@@ -20,7 +16,7 @@ pipeline {
     stage('deploy') {
       steps {
         script {
-          dir('backend/') {
+          dir('frontend/') {
             sh './deploy_frontend.sh'
           }
         }
