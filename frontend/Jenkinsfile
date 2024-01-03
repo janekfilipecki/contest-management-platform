@@ -10,6 +10,7 @@ pipeline {
           dir('frontend/') {
             echo 'Install dependencies'
             sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
+            sh 'source ~/.bashrc'
             sh 'nvm install node'
             sh 'npm install'
           }
