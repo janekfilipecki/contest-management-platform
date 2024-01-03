@@ -26,12 +26,11 @@ pipeline {
         }
       }
     }
-    stage('build') {
+    stage('migrations') {
       steps {
         script {
           dir('backend/') {
-            sh 'python3 -m pipenv run python manage.py makemigrations'
-            sh 'python3 -m pipenv run python manage.py migrate'
+            sh './backend_migrations.sh'
           }
         }
       }
