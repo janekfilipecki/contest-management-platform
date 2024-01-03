@@ -1,0 +1,29 @@
+pipeline {
+  agent any
+  triggers {
+    githubPush()
+  }
+  stages {
+    stage('install dependencies') {
+      steps {
+        script {
+          dir('frontend/') {
+            echo 'Install dependencies'
+            sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
+            sh 'nvm install node'
+            sh 'npm install'
+          }
+        }
+      }
+    }
+    stage('deploy') {
+      steps {
+        script {
+          dir('backend/') {
+            sh './deploy_frontend.sh'
+          }
+        }
+      }
+    }
+  }
+}
