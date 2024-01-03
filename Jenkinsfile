@@ -25,6 +25,15 @@ pipeline {
         }
       }
     }
+    stage('build') {
+      steps {
+        script {
+          dir('backend/') {
+            sh 'python3 -m pipenv run python manage.py migrate'
+          }
+        }
+      }
+    }
     stage('deploy') {
       steps {
         script {
