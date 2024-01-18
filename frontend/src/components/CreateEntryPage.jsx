@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "./Header";
+import axios from "axios";
 import BackButton from "./BackButton";
+import Navbar from "./Navbar";
 import EntryForm from "./EntryForm";
 
 function CreateEntryPage() {
@@ -10,33 +11,29 @@ function CreateEntryPage() {
   const { contestId } = useParams();
 
   const handleFormSubmit = async (formData) => {
-    let response;
-    try {
-      response = await fetch(`${import.meta.env.VITE_API_URL}api/entries/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    return axios.post(`${import.meta.env.VITE_API_URL}api/entries/`, formData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + sessionStorage.getItem('accessToken')
+      },
+    })
+    .then((response) => {
       console.log(JSON.stringify(formData));
-      if (!response.ok) {
+      if (response && response.status !== 201) {
         throw new Error('Network response was not ok');
       }
-
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    return response;
+      console.log(response.data);
+      return response;
+    });
   };
 
-  const handleBack = () => { navigate("/"); };
+  const handleBack = () => {
+    navigate("/");
+  };
 
   return (
     <div>
-      <Header />
+      <Navbar />
       <div className="main">
         <div className="back-btn">
           <BackButton clickHandler={handleBack} />
@@ -46,7 +43,7 @@ function CreateEntryPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default CreateEntryPage;

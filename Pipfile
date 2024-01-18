@@ -4,6 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+django = "*"
+sphinx-needs = "*"
+"sphinxcontrib.plantuml" = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+psycopg = "*"
+pre-commit = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
